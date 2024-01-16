@@ -1,11 +1,11 @@
 import os
-from flask import Flask, flash, request, redirect, url_for
+from flask import Flask, flash, request, redirect, url_for, jsonify
 from flask_restful import Resource, Api
 from werkzeug.utils import secure_filename
 from mpp_reader import read_mpp
 
 UPLOAD_FOLDER = 'files'
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'mpp'}
+ALLOWED_EXTENSIONS = {'mpp'}
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -30,7 +30,9 @@ class FileHandler(Resource):
         if file and self.allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            read_mpp(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            result = read_mpp(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            if result is not None: 
+                return jsonify(result)
             return 'File uploaded successfully'
 
 api.add_resource(FileHandler, "/")

@@ -5,7 +5,7 @@ def read_mpp(file: str) ->list :
     try:
         if not jpype.isJVMStarted():
             jvmPath = jpype.getDefaultJVMPath()
-            jpype.startJVM()
+            jpype.startJVM(convertStrings=True)
 
         if not  jpype.java.lang.Thread.isAttached():
             jpype.attachThreadToJVM()
@@ -99,7 +99,7 @@ def read_mpp(file: str) ->list :
         data['constraintType'] = task.getConstraintType().toString()
         data['notes'] = task.getNotes()
         data['outlineLevel'] = task.getOutlineLevel().toString()
-        data['outlineNumber'] = task.getOutlineNumber().toString()
+        data['outlineNumber'] = task.getOutlineNumber()
         data['predecessors'] = task.getPredecessors().toString()
         dataMPP.append(data)
         count = count + 1
@@ -107,5 +107,3 @@ def read_mpp(file: str) ->list :
             break 
     return dataMPP
     jpype.shutdownJVM()
-
-print(read_mpp("files/example.mpp"))
