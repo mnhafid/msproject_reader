@@ -33,7 +33,7 @@ def read_mpp(file: str) ->list :
 
 
     # Just to get started, let's see what tasks we have
-    print("Tasks")
+    # print("Tasks")
     tasks = project.getTasks()
 
     # for task in tasks:
@@ -42,12 +42,12 @@ def read_mpp(file: str) ->list :
     print()
 
     # OK, so what custom field so we have?
-    print("Custom Fields")
+    # print("Custom Fields")
     # for field in project.getCustomFields():
     #     print(field.getFieldType().getFieldTypeClass().toString() + "\t" +
     #           field.getFieldType().toString() + "\t" +
     #           field.getAlias())
-    print()
+    # print()
 
     # Ah! We have custom field definitions here for different entity types
     # (tasks, resources etc). Let's filter that list down to just task custom
@@ -55,10 +55,10 @@ def read_mpp(file: str) ->list :
     task_custom_fields = list(filter(lambda field: field.getFieldType(
     ).getFieldTypeClass() == FieldTypeClass.TASK, project.getCustomFields()))
 
-    print("Task Custom Fields")
-    for field in task_custom_fields:
-        print(field.getFieldType().getFieldTypeClass().toString() + "\t" +
-              field.getFieldType().toString() + "\t" + field.getAlias())
+    # print("Task Custom Fields")
+    # for field in task_custom_fields:
+    #     print(field.getFieldType().getFieldTypeClass().toString() + "\t" +
+    #           field.getFieldType().toString() + "\t" + field.getAlias())
 
     # Let's build a report showing the ID, Name and any custom fields for each task.
     # First we'll build a list of column headings and a list of field types
@@ -70,7 +70,7 @@ def read_mpp(file: str) ->list :
 
     # Now we can print the column headings, then iterate through the tasks
     # and retrieve the values using the field types.
-    print('\t'.join(column_names))
+    # print('\t'.join(column_names))
     count = 0
     dataMPP = []
     for task in tasks:
@@ -78,8 +78,8 @@ def read_mpp(file: str) ->list :
         column_values = map(lambda type: str(
             task.getCachedValue(type)), column_types)
         
-        print(task.getID().toString() + "\t" +
-            task.getName() + "\t" + task.getStart().toString())
+        # print(task.getID().toString() + "\t" +
+        #     task.getName() + "\t" + task.getStart().toString())
         data['id'] =  task.getID().toString()
         data['name'] = task.getName()
         data['duration'] = task.getDuration().toString()
