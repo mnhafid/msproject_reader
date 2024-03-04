@@ -103,7 +103,5 @@ def read_mpp(file: str) ->list :
         data['predecessors'] = task.getPredecessors().toString()
         dataMPP.append(data)
         count = count + 1
-        if count == 3:
-            break 
     return dataMPP
     jpype.shutdownJVM()
