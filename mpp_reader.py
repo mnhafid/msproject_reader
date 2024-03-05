@@ -36,18 +36,18 @@ def read_mpp(file: str) ->list :
     # print("Tasks")
     tasks = project.getTasks()
 
-    # for task in tasks:
-    #     print(task.getID().toString() + "\t" +
-    #           task.getName())
+    for task in tasks:
+        print(task.getID().toString() + "\t" +
+              task.getName())
     print()
 
     # OK, so what custom field so we have?
-    # print("Custom Fields")
-    # for field in project.getCustomFields():
-    #     print(field.getFieldType().getFieldTypeClass().toString() + "\t" +
-    #           field.getFieldType().toString() + "\t" +
-    #           field.getAlias())
-    # print()
+    print("Custom Fields")
+    for field in project.getCustomFields():
+        print(field.getFieldType().getFieldTypeClass().toString() + "\t" +
+              field.getFieldType().toString() + "\t" +
+              field.getAlias())
+    print()
 
     # Ah! We have custom field definitions here for different entity types
     # (tasks, resources etc). Let's filter that list down to just task custom
@@ -55,10 +55,10 @@ def read_mpp(file: str) ->list :
     task_custom_fields = list(filter(lambda field: field.getFieldType(
     ).getFieldTypeClass() == FieldTypeClass.TASK, project.getCustomFields()))
 
-    # print("Task Custom Fields")
-    # for field in task_custom_fields:
-    #     print(field.getFieldType().getFieldTypeClass().toString() + "\t" +
-    #           field.getFieldType().toString() + "\t" + field.getAlias())
+    print("Task Custom Fields")
+    for field in task_custom_fields:
+        print(field.getFieldType().getFieldTypeClass().toString() + "\t" +
+              field.getFieldType().toString() + "\t" + field.getAlias())
 
     # Let's build a report showing the ID, Name and any custom fields for each task.
     # First we'll build a list of column headings and a list of field types
@@ -73,6 +73,8 @@ def read_mpp(file: str) ->list :
     # print('\t'.join(column_names))
     count = 0
     dataMPP = []
+    result = dict()
+    result["count"] = len(tasks)
     for task in tasks:
         data = dict()
         column_values = map(lambda type: str(
@@ -100,8 +102,12 @@ def read_mpp(file: str) ->list :
         data['notes'] = task.getNotes()
         data['outlineLevel'] = task.getOutlineLevel().toString()
         data['outlineNumber'] = task.getOutlineNumber()
-        data['predecessors'] = task.getPredecessors().toString()
+        data['wbs'] = task.getWBS()
+        data["predecessors"] = task.getPredecessors().toString()
+        data["uniqueID"] = task.getUniqueID().toString()
+        data["priority"] = task.getPriority().toString()
+        data["successors"] = task.getSuccessors().toString()
         dataMPP.append(data)
-        count = count + 1
-    return dataMPP
+    result["tasks"] = dataMPP
+    return result
     jpype.shutdownJVM()
